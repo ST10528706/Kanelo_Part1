@@ -16,6 +16,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: maven
-      - name: Run unit tests
-        run: mvn -B test
+          
+      - name: Run unit tests with Ant
+        run: ant -noinput -buildfile build.xml test
