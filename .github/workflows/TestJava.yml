@@ -17,5 +17,10 @@ jobs:
           java-version: '25'
           distribution: 'temurin'
           
+      - name: Download JUnit
+        run: |
+          mkdir -p junit-libs
+          curl -L -o junit-libs/junit-4.13.2.jar https://repo1.maven.org/maven2/junit/junit/4.13.2.jar
+          curl -L -o junit-libs/hamcrest-core-1.3.jar https://repo1.maven.org/maven2/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar
       - name: Run unit tests with Ant
-        run: ant -noinput -buildfile build.xml test
+        run: ant -noinput -buildfile build.xml -Djavac.test.classpath="build/classes:junit-libs/junit-4.13.2.jar:junit-libs/hamcrest-core-1.3.jar" test 
