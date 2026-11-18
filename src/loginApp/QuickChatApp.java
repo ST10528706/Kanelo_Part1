@@ -45,6 +45,8 @@ public class QuickChatApp{
             System.out.println(login.returnLoginStatus(loggedIn));
         }
         System.out.println("\nWelcome to Quickchat.");
+        MessageStore.currentSender= firstname + " " + lastname;
+        MessageStore.loadStoredFromJson();
         int numMessagesToSend =
                 readInt(scanner, "How many messages would you like to send?");
     // Main menu loop//
@@ -69,6 +71,9 @@ public class QuickChatApp{
                 case "2" -> {
                     System.out.println("Coming soon");
             }
+                case "4" -> {
+                MessageStore.storedMessagesMenu(scanner);
+                }
 
                 case "3" -> {
                     running = false;
@@ -109,8 +114,20 @@ public class QuickChatApp{
     System.out.println("2) Discard Message");
     System.out.println("3) Store message to send later");
     System.out.println(" Your Choice:");
-        String outcome= message.sentMessage(choice);
-               System.out.println(outcome);
+        int sendChoice = readInt(scanner, "");
+String outcome = message.sentMessage(sendChoice);
+System.out.println(outcome);
+
+String flag = null;
+if (sendChoice == 1) flag = MessageStore.SENT;
+else if (sendChoice == 2) flag = MessageStore.DISREGARD;
+else if (sendChoice == 3) flag = MessageStore.STORED;
+
+if (flag != null) {
+    MessageStore.addMessage(message.getMessageID(), message.getMessageHash(),
+            MessageStore.currentSender, message.getRecipient(),
+            message.getMessageTExt(), flag);
+}
                if (choice == 1) {
                System.out.println("\n--- Message Details---");
                     System.out.println("Message ID:" + message.getMessageID());
